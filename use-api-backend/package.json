@@ -1,0 +1,15 @@
+{
+  "name": "get-substrate-block-information",
+  "version": "1.0.0",
+  "author": "laurenttrk",
+  "description": "Get block information from a Substrate BlockChain ",
+  "license": "UNLICENSED",
+  "main": "main.js",
+  "scripts": {
+    "local": "node main.js ws://127.0.0.1:9944",
+    "polkadot": "node main.js wss://rpc.polkadot.io"
+  },
+  "dependencies": {
+    "@polkadot/api": "^2.2.1"
+  }
+}
