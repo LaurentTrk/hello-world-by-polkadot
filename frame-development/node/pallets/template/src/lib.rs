@@ -97,8 +97,12 @@ decl_module! {
 		#[weight = 10_000 + T::DbWeight::get().writes(1)]
 		pub fn update_hackathon_details(origin, details: HackathonDetails) -> dispatch::DispatchResult {
 			let who = ensure_signed(origin)?;
-			Details::put(details.clone());
-			Self::deposit_event(RawEvent::HackathonDetailsStored(details, who));
+			let mut details_to_store = details.clone();
+			if details.challenges_submitted >= 18 {
+				details_to_store.bounties_prize = Some(150 + 10 * (details.challenges_submitted - 18));
+			}
+			Details::put(details_to_store.clone());
+			Self::deposit_event(RawEvent::HackathonDetailsStored(details_to_store, who));
 			Ok(())
 		}
 

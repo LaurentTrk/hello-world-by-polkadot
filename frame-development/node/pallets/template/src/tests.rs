@@ -21,6 +21,24 @@ fn storing_hackathon_details_should_work() {
 }
 
 #[test]
+fn submitted_18_challenges_should_trigger_bounty() {
+	new_test_ext().execute_with(|| {
+		let details = HackathonDetails{ username : Vec::from("laurenttrk") , challenges_submitted: 18, bounties_prize: None };
+		assert_ok!(TemplateModule::update_hackathon_details(Origin::signed(1), details.clone()));
+		assert_eq!(TemplateModule::get_hackathon_details().bounties_prize, Some(150));
+	});
+}
+
+#[test]
+fn submitted_more_than_18_challenges_should_trigger_more_bounties() {
+	new_test_ext().execute_with(|| {
+		let details = HackathonDetails{ username : Vec::from("laurenttrk") , challenges_submitted: 20, bounties_prize: None };
+		assert_ok!(TemplateModule::update_hackathon_details(Origin::signed(1), details.clone()));
+		assert_eq!(TemplateModule::get_hackathon_details().bounties_prize, Some(170));
+	});
+}
+
+#[test]
 fn correct_error_for_none_value() {
 	new_test_ext().execute_with(|| {
 		// Ensure the expected error is thrown when no value is present.
