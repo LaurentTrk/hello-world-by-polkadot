@@ -13,6 +13,7 @@ import Interactor from './Interactor';
 import Metadata from './Metadata';
 import NodeInfo from './NodeInfo';
 import TemplateModule from './TemplateModule';
+import HackathonDetails from './HackathonDetails';
 import Transfer from './Transfer';
 import Upgrade from './Upgrade';
 
@@ -69,8 +70,11 @@ function Main () {
             <Upgrade accountPair={accountPair} />
           </Grid.Row>
           <Grid.Row>
-            <Interactor accountPair={accountPair} />
+            <HackathonDetails accountPair={accountPair} />
             <Events />
+          </Grid.Row>
+          <Grid.Row>
+            <Interactor accountPair={accountPair} />
           </Grid.Row>
           <Grid.Row>
             <TemplateModule accountPair={accountPair} />
