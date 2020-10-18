@@ -1,3 +1,7 @@
 {
-  "PROVIDER_SOCKET": "wss://dev-node.substrate.dev"
+  "CUSTOM_TYPES": {
+    "Address": "AccountId",
+    "LookupSource": "AccountId"
+  },
+  "PROVIDER_SOCKET": "wss://kusama-rpc.polkadot.io/"
 }
