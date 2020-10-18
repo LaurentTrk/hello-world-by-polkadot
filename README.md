@@ -34,3 +34,50 @@ Everyone successfully solving any challenge and receiving a payout will also get
 -----------------------------------------
 
 ## [Head over to Hello World! by Polkadot and solve some awesome challenges!](https://gitcoin.co/hackathon/polkadot/onboard?utm_source=github&utm_medium=referral&utm_campaign=hello+world)
+
+## Challenges
+
+### Submitted
+- [x] **BEGINNER CHALLENGE** Set An Identity On Kusama Or Polkadot's Development Version
+
+- [x] **BEGINNER CHALLENGE** Run A Kusama Or Polkadot Node And Add It To Telemetry
+
+- [x] **BEGINNER CHALLENGE** Back-End Javascript 
+
+- [x] **BEGINNER CHALLENGE** Play With Westend
+
+- [x] **BEGINNER CHALLENGE** Run A Private Substrate Network
+
+- [x] **BEGINNER CHALLENGE** Launch A Local Substrate Development Chain
+
+- [x] **BEGINNER CHALLENGE** Deploying Solidity Contract On Plasm Network V1
+
+- [x] **INTERMEDIATE CHALLENGE** Forkless Upgrades
+
+- [x] **INTERMEDIATE CHALLENGE** FRAME Identity: Set An Identity On A Local --Dev Chain
+
+- [x] **INTERMEDIATE CHALLENGE** FRAME Development
+
+- [x] **ECOSYSTEM CHALLENGE** (Beginner) Build And Run A Local Phala Network
+
+- [x] **ECOSYSTEM CHALLENGE** (Advanced) Build The First Confidential Contract
+
+- [x] **ECOSYSTEM CHALLENGE** Using Remix And MetaMask On Moonbeam
+
+### To do
+
+- [ ] **INTERMEDIATE CHALLENGE** Smart Contracts - Write An ERC-20 Smart Contract With Ink!
+- [ ] **INTERMEDIATE CHALLENGE** FRAME Multisig
+- [ ] **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support
+- [ ] **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support
+- [ ] **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle
+- [ ] **BEGINNER CHALLENGE** Front-End Javascript
+
+
+- [ ] **ADVANCED CHALLENGE** Build A DApp
+- [ ] **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle
+- [ ] **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator
+- [ ] **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
+- [ ] **INTERMEDIATE CHALLENGE** Deploying An Auction Solidity Contract On Plasm Network
+- [ ] **EXTRA PRIZE** Complete 18 Or More Challenges - 150 DOT For The First 50 Valid Submissions
+
