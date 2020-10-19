@@ -38,46 +38,37 @@ Everyone successfully solving any challenge and receiving a payout will also get
 ## Challenges
 
 ### Submitted
-- [x] **BEGINNER CHALLENGE** Set An Identity On Kusama Or Polkadot's Development Version
 
-- [x] **BEGINNER CHALLENGE** Run A Kusama Or Polkadot Node And Add It To Telemetry
-
-- [x] **BEGINNER CHALLENGE** Back-End Javascript 
-
-- [x] **BEGINNER CHALLENGE** Play With Westend
-
-- [x] **BEGINNER CHALLENGE** Run A Private Substrate Network
-
-- [x] **BEGINNER CHALLENGE** Launch A Local Substrate Development Chain
-
-- [x] **BEGINNER CHALLENGE** Deploying Solidity Contract On Plasm Network V1
-
-- [x] **INTERMEDIATE CHALLENGE** Forkless Upgrades
-
-- [x] **INTERMEDIATE CHALLENGE** FRAME Identity: Set An Identity On A Local --Dev Chain
-
-- [x] **INTERMEDIATE CHALLENGE** FRAME Development
-
-- [x] **ECOSYSTEM CHALLENGE** (Beginner) Build And Run A Local Phala Network
-
-- [x] **ECOSYSTEM CHALLENGE** (Advanced) Build The First Confidential Contract
-
-- [x] **ECOSYSTEM CHALLENGE** Using Remix And MetaMask On Moonbeam
+1. **BEGINNER CHALLENGE** Set An Identity On Kusama Or Polkadot's Development Version
+2. **BEGINNER CHALLENGE** Run A Kusama Or Polkadot Node And Add It To Telemetry
+3. **BEGINNER CHALLENGE** Front-End Javascript
+4. **BEGINNER CHALLENGE** Back-End Javascript 
+5. **BEGINNER CHALLENGE** Play With Westend
+6. **BEGINNER CHALLENGE** Run A Private Substrate Network
+7. **BEGINNER CHALLENGE** Launch A Local Substrate Development Chain
+8. **BEGINNER CHALLENGE** Deploying Solidity Contract On Plasm Network V1
+9. **INTERMEDIATE CHALLENGE** Forkless Upgrades
+10. **INTERMEDIATE CHALLENGE** FRAME Identity: Set An Identity On A Local --Dev Chain
+11. **INTERMEDIATE CHALLENGE** FRAME Development
+12. **INTERMEDIATE CHALLENGE** Smart Contracts - Write An ERC-20 Smart Contract With Ink!
+13. **ECOSYSTEM CHALLENGE** (Beginner) Build And Run A Local Phala Network
+14. **ECOSYSTEM CHALLENGE** (Advanced) Build The First Confidential Contract
+15. **ECOSYSTEM CHALLENGE** Using Remix And MetaMask On Moonbeam
+16. **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support
+17. **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support
 
 ### To do
 
-- [ ] **INTERMEDIATE CHALLENGE** Smart Contracts - Write An ERC-20 Smart Contract With Ink!
-- [ ] **INTERMEDIATE CHALLENGE** FRAME Multisig
-- [ ] **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support
-- [ ] **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support
-- [ ] **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle
-- [ ] **BEGINNER CHALLENGE** Front-End Javascript
+-  **INTERMEDIATE CHALLENGE** FRAME Multisig
+-  **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle
+-  **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle
 
 
-- [ ] **ADVANCED CHALLENGE** Build A DApp
-- [ ] **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle
-- [ ] **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator
-- [ ] **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
-- [ ] **INTERMEDIATE CHALLENGE** Deploying An Auction Solidity Contract On Plasm Network
-- [ ] **EXTRA PRIZE** Complete 18 Or More Challenges - 150 DOT For The First 50 Valid Submissions
+-  **ADVANCED CHALLENGE** Build A DApp
+-  **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator
+-  **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
+-  **INTERMEDIATE CHALLENGE** Deploying An Auction Solidity Contract On Plasm Network
+
+
+-  **EXTRA PRIZE** Complete 18 Or More Challenges - 150 DOT For The First 50 Valid Submissions
 
