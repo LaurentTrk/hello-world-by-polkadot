@@ -1,7 +1,29 @@
 {
   "CUSTOM_TYPES": {
     "Address": "AccountId",
-    "LookupSource": "AccountId"
+    "LookupSource": "AccountId",
+    "ClassId": "u64",
+    "TokenId": "u64",
+    "CID": "Vec<u8>",
+    "ClassData": "u32",
+    "TokenData": "u32",
+    "ClassInfo": {
+      "metadata" : "CID",
+      "total_issuance": "TokendId",
+      "owner": "AccountId",
+      "data": "TokenData"
+    },
+    "TokenInfo" : {
+      "metadata": "CID",
+      "owner": "AccountId",
+      "data": "TokenData"
+    },
+    "TokenInfoOf" : {
+      "metadata": "CID",
+      "owner": "AccountId",
+      "data": "TokenData"
+    }
   },
   "PROVIDER_SOCKET": "ws://127.0.0.1:9944"
 }
+
