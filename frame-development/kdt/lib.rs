@@ -21,12 +21,11 @@ mod kdt {
     #[cfg(not(feature = "ink-as-dependency"))]
     use ink_storage::{
         collections::HashMap as StorageHashMap,
-        lazy::Lazy,
     };
 
     #[ink(storage)]
     pub struct Kdt {
-        total_supply: Lazy<Balance>,
+        total_supply: Balance,
         balances: StorageHashMap<AccountId, Balance>,
         allowances: StorageHashMap<(AccountId, AccountId), Balance>,
     }
@@ -58,7 +57,7 @@ mod kdt {
             let mut balances = StorageHashMap::new();
             balances.insert(caller, initial_supply);
             let instance = Self {
-                total_supply: Lazy::new(initial_supply),
+                total_supply: initial_supply,
                 balances,
                 allowances: StorageHashMap::new(),
             };
@@ -72,7 +71,7 @@ mod kdt {
 
         #[ink(message)]
         pub fn total_supply(&self) -> Balance {
-            *self.total_supply
+            self.total_supply
         }
 
         #[ink(message)]
