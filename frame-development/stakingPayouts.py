@@ -1,4 +1,24 @@
 #!/usr/bin/python
+#
+# Substrate Staking Payouts Calculator
+# Author: LaurentTrk <laurent.turek@gmail.com>
+#
+# For Hello World! Polkadot Hackathon
+# See https://gitcoin.co/issue/Polkadot-Network/hello-world-by-polkadot/5/100023931
+#
+# This script calculate staking payouts fetched from a sidecar instance connected to a live chain
+# See https://github.com/paritytech/substrate-api-sidecar for running a sidecar.
+#
+# (A sidecar connected to Kusama is available at https://ltk.codes:9043)
+#
+# Usage:
+#   stakingPayouts.py [-s <sidecarUrl>] [-a <accountId>] [-d <depth>] [-e <era>] [-c]
+#       <sidecarUrl> : the url of the sidecar instance (default is http://127.0.0.1:8080)
+#       <accountId> : the staking account id (default is the last block author)
+#       <depth> : the number of eras to query for payouts of (default is 5)
+#       <era> : the era to query at (default is the last one)
+#       -c : query all payouts (default queries only unclaimed payouts)
+#
 import getopt
 import json
 import sys
@@ -62,6 +82,7 @@ def request_last_block_author(sidecar_url):
 
 
 def request_staking_payouts(sidecar_url, account_id, depth, era, unclaimed_only):
+    print('Loading staking payouts, it can take a long time. Be patient, please...')
     request_params = f'depth={depth}&unclaimedOnly={str(unclaimed_only).lower()}'
     if era != -1:
         request_params += f'&era={era}'
@@ -96,13 +117,13 @@ def get_parameters(argv):
     era = -1
     unclaimed_only = True
     try:
-        opts, args = getopt.getopt(argv, "hs:a:d:e:c", ["sidecar=", "accountId=", "depth=", "era", "all"])
+        opts, args = getopt.getopt(argv, "hs:a:d:e:c", ["sidecar=", "accountId=", "depth=", "era=", "all"])
     except getopt.GetoptError:
         display_help_and_exit(2)
     for opt, arg in opts:
         if opt == '-h':
             display_help_and_exit()
-        elif opt in ("-u", "--sidecar"):
+        elif opt in ("-s", "--sidecar"):
             sidecar_url = arg
         elif opt in ("-c", "--all"):
             unclaimed_only = False
