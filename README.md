@@ -54,19 +54,21 @@ Everyone successfully solving any challenge and receiving a payout will also get
 13. **ECOSYSTEM CHALLENGE** (Beginner) Build And Run A Local Phala Network
 14. **ECOSYSTEM CHALLENGE** (Advanced) Build The First Confidential Contract
 15. **ECOSYSTEM CHALLENGE** Using Remix And MetaMask On Moonbeam
-16. **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support
-17. **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support
+16. **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle
+17. **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support
+18. **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support
+19. **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator
+
+### Doing
+
+20. **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
 
 ### To do
-
--  **INTERMEDIATE CHALLENGE** FRAME Multisig
--  **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle
 -  **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle
+-  **INTERMEDIATE CHALLENGE** FRAME Multisig
 
 
 -  **ADVANCED CHALLENGE** Build A DApp
--  **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator
--  **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
 -  **INTERMEDIATE CHALLENGE** Deploying An Auction Solidity Contract On Plasm Network
 
 
