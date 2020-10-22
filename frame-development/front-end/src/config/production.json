@@ -4,5 +4,5 @@
     "LookupSource": "AccountId"
   },
   "PROVIDER_SOCKET": "wss://rpc.polkadot.io",
-  "SIDECAR_URL": "https://ltk.codes:9043/"
+  "SIDECAR_URL": "https://polkadot.fees.ltk.codes/"
 }
