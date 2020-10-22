@@ -1,12 +1,10 @@
-import {useSubstrate} from "./SubstrateContext";
-
-export default async function fakeSign(api, transaction, account){
+export default async function fakeSign(api, transaction, account) {
     const signingOptions = await getSigningOptions(api, account);
     return transaction.signFake(account, signingOptions);
 }
 
 const getSigningOptions = async (api, account) => {
-    return api.derive.tx.signingInfo(account).then((signingInfo)=> {
+    return api.derive.tx.signingInfo(account).then((signingInfo) => {
         return buildSigningOptions(api, signingInfo);
     });
 }
