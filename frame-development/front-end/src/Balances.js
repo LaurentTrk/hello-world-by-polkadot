@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Grid, Button } from 'semantic-ui-react';
+import {Table, Grid, Button, Label, Icon, Menu} from 'semantic-ui-react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useSubstrate } from './substrate-lib';
 
@@ -28,15 +28,16 @@ export default function Main (props) {
   return (
     <Grid.Column>
       <h1>Balances</h1>
+      <Label color={'red'}><Icon name='warning sign' />You are connected to the Polkadot (live) chain, this is real DOTs !</Label>
       <Table celled striped size='small'>
         <Table.Body>{accounts.map(account =>
           <Table.Row key={account.address}>
             <Table.Cell width={3} textAlign='right'>{account.meta.name}</Table.Cell>
             <Table.Cell width={10}>
               <span style={{ display: 'inline-block', minWidth: '31em' }}>
-                {account.address}
+                {keyring.encodeAddress(account.publicKey, 0)}
               </span>
-              <CopyToClipboard text={account.address}>
+              <CopyToClipboard text={keyring.encodeAddress(account.publicKey, 0)}>
                 <Button
                   basic
                   circular
