@@ -41,7 +41,11 @@ Everyone successfully solving any challenge and receiving a payout will also get
 
 1. **BEGINNER CHALLENGE** Set An Identity On Kusama Or Polkadot's Development Version
 2. **BEGINNER CHALLENGE** Run A Kusama Or Polkadot Node And Add It To Telemetry
-3. **BEGINNER CHALLENGE** Front-End Javascript
+3. **BEGINNER CHALLENGE** Front-End Javascript  
+18 7h44PM
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/FrontEnd/frame-development/front-end
+https://kidot.ltk.codes:943/
+
 4. **BEGINNER CHALLENGE** Back-End Javascript 
 5. **BEGINNER CHALLENGE** Play With Westend
 6. **BEGINNER CHALLENGE** Run A Private Substrate Network
@@ -50,21 +54,25 @@ Everyone successfully solving any challenge and receiving a payout will also get
 9. **INTERMEDIATE CHALLENGE** Forkless Upgrades
 10. **INTERMEDIATE CHALLENGE** FRAME Identity: Set An Identity On A Local --Dev Chain
 11. **INTERMEDIATE CHALLENGE** FRAME Development
-12. **INTERMEDIATE CHALLENGE** Smart Contracts - Write An ERC-20 Smart Contract With Ink!
+12. **INTERMEDIATE CHALLENGE** Smart Contracts - Write An ERC-20 Smart Contract With Ink!  
+19 3:05PM
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/ERC20SmartContract/frame-development
+
 13. **ECOSYSTEM CHALLENGE** (Beginner) Build And Run A Local Phala Network
 14. **ECOSYSTEM CHALLENGE** (Advanced) Build The First Confidential Contract
 15. **ECOSYSTEM CHALLENGE** Using Remix And MetaMask On Moonbeam
 16. **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle
 17. **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support
 18. **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support
-19. **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator
+19. **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
+20. **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/SideCar/frame-development/front-end
 
 ### Doing
+-  **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle
 
-20. **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
 
 ### To do
--  **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle
 -  **INTERMEDIATE CHALLENGE** FRAME Multisig
 
 
