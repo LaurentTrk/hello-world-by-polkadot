@@ -32,9 +32,9 @@ function Main (props) {
             <span>{nodeInfo.chain}</span>
           </Card.Meta>
           <Card.Description>
-            Built using the{' '}
-            <a href='https://github.com/substrate-developer-hub/substrate-front-end-template'>
-              Substrate Front End Template
+            Charity Raffle for the {' '}
+            <a href='https://gitcoin.co/issue/Polkadot-Network/hello-world-by-polkadot/3/100023929'>
+              Hello world! Polkadot Challenge
             </a>
           </Card.Description>
         </Card.Content>
