@@ -10,6 +10,8 @@ mod charity_raffle {
         collections::HashMap as StorageHashMap,
         collections::Vec as StorageVec,
     };
+    use ink_env::{ hash::{ Blake2x256 } };
+    use scale::Decode;
 
     /// Number of winners
     const MAX_WINNERS: usize = 2;
@@ -23,8 +25,6 @@ mod charity_raffle {
 
     #[ink(storage)]
     pub struct CharityRaffle {
-        /// The charity pot account. Will receive the contract funds when at raffle end
-        charity_pot: AccountId,
         /// The charity pot balance.
         charity_pot_balance: Balance,
         /// The list of players
@@ -61,9 +61,6 @@ mod charity_raffle {
     #[ink(event)]
     /// New raffle created
     pub struct NewRaffle {
-        #[ink(topic)]
-        /// The charity pot account. Will receive the contract funds when at raffle end
-        charity_pot: AccountId,
     }
 
     #[ink(event)]
@@ -105,9 +102,8 @@ mod charity_raffle {
     impl CharityRaffle {
         #[ink(constructor)]
         /// Create a new raffle
-        pub fn new(charity_pot: AccountId, minimum_players: u32, minimum_raffle_duration: u64) -> Self {
+        pub fn new(minimum_players: u32, minimum_raffle_duration: u64) -> Self {
             let instance = Self {
-                charity_pot,
                 charity_pot_balance: 0,
                 players: StorageVec::new(),
                 unique_players: StorageHashMap::new(),
@@ -117,16 +113,8 @@ mod charity_raffle {
                 minimum_raffle_duration,
             };
 
-            Self::env().emit_event(NewRaffle {
-                charity_pot,
-            });
+            Self::env().emit_event(NewRaffle {});
             instance
-        }
-
-        #[ink(message)]
-        /// The charity pot account. Will receive the contract funds when at raffle end
-        pub fn charity_pot(&self) -> AccountId {
-            self.charity_pot
         }
 
         #[ink(message)]
@@ -208,7 +196,7 @@ mod charity_raffle {
         /// Terminate the raffle contract
         pub fn terminate(&mut self) {
             if self.is_closed() {
-                self.env().terminate_contract(self.charity_pot)
+                self.env().terminate_contract(self.get_multisig_winners_account())
             }
         }
 
@@ -244,12 +232,17 @@ mod charity_raffle {
         }
 
         fn transfer_collected_funds_to_charity_pot(&mut self) -> Result<()> {
-            let transfer_result = self.env().transfer(self.charity_pot, self.charity_pot_balance);
+            let transfer_result = self.env().transfer(self.get_multisig_winners_account(), self.charity_pot_balance);
             if transfer_result.is_err() {
                 Self::env().emit_event(TransferFailed {});
                 return Err(Error::TransferFailed)
             }
             return Ok(())
+        }
+
+        fn get_multisig_winners_account(&self) -> AccountId {
+            let who = [self.winners[0].unwrap(), self.winners[1].unwrap()];
+            CharityRaffle::create_multisig_address(&who, 2)
         }
 
         fn minimum_raffle_duration_is_not_set_or_has_expired(&self) -> bool {
@@ -327,6 +320,13 @@ mod charity_raffle {
                 ((array[3] as u32) << 0)
         }
 
+        // From https://substrate.dev/rustdocs/v2.0.0-rc6/src/pallet_multisig/lib.rs.html#518
+        fn create_multisig_address(who: &[AccountId], threshold: u16) -> AccountId{
+            let entropy = (b"modlpy/utilisuba", who, threshold);
+            let mut output = [0;32];
+            ink_env::hash_encoded::<Blake2x256, _>(&entropy, &mut output);
+            AccountId::decode(&mut &output[..]).unwrap_or_default()
+        }
     }
 
     /// Unit tests.t
@@ -344,12 +344,11 @@ mod charity_raffle {
 
         #[ink::test]
         fn new_works() {
-            let charity = CharityRaffle::new(default_accounts().frank, MINIMUM_PLAYERS, MINIMUM_RAFFLE_DURATION_IN_MS);
+            let charity = CharityRaffle::new(MINIMUM_PLAYERS, MINIMUM_RAFFLE_DURATION_IN_MS);
 
             // Transfer event triggered during initial construction.
             let emitted_events = ink_env::test::recorded_events().collect::<Vec<_>>();
             assert_eq!(1, emitted_events.len());
-            assert_eq!(charity.charity_pot(), default_accounts().frank);
             assert_eq!(charity.is_started(), false);
             assert_eq!(charity.is_drawable(), false);
         }
@@ -410,7 +409,7 @@ mod charity_raffle {
 
         #[ink::test]
         fn draw_after_wait_after_raffle_has_started() {
-            let mut charity = CharityRaffle::new(default_accounts().frank, MINIMUM_PLAYERS, 0);
+            let mut charity = CharityRaffle::new(MINIMUM_PLAYERS, 0);
             start_raffle(&mut charity);
             assert_eq!(charity.draw(), Ok(()));
             assert_eq!(charity.draw(), Err(Error::TransferFailed));
@@ -424,8 +423,19 @@ mod charity_raffle {
             assert_eq!(random_number, another_random_number);
         }
 
+        /// We should have same random numbers within the same execution
+        #[ink::test]
+        fn create_multisig_address_should_work() {
+            let who = [default_accounts().alice, default_accounts().bob];
+            println!("{:?}", default_accounts().alice);
+            let multisig_account = CharityRaffle::create_multisig_address(&who,2);
+            println!("{:?}", multisig_account);
+        }
+
+
+
         fn create_default_charity_raffle() -> CharityRaffle {
-            CharityRaffle::new(default_accounts().frank, MINIMUM_PLAYERS, MINIMUM_RAFFLE_DURATION_IN_MS)
+            CharityRaffle::new(MINIMUM_PLAYERS, MINIMUM_RAFFLE_DURATION_IN_MS)
         }
 
         fn start_raffle(charity: &mut CharityRaffle) {
