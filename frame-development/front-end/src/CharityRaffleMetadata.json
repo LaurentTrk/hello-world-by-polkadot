@@ -1,0 +1,820 @@
+{
+  "metadataVersion": "0.1.0",
+  "source": {
+    "hash": "0x2b41e723ed29a1e56b5418ce60ab587c935facde7a638ac5d3bbae0e18194383",
+    "language": "ink! 3.0.0-rc2",
+    "compiler": "rustc 1.47.0-nightly"
+  },
+  "contract": {
+    "name": "charity_raffle",
+    "version": "0.1.0",
+    "authors": [
+      "LaurentTrk <[laurent.turek@gmail.com]>"
+    ],
+    "description": "Charity Raffle Contract"
+  },
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "name": "charity_pot",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "name": "minimum_players",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 5
+            }
+          },
+          {
+            "name": "minimum_raffle_duration",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 11
+            }
+          }
+        ],
+        "docs": [
+          " Create a new raffle"
+        ],
+        "name": [
+          "new"
+        ],
+        "selector": "0xd183512b"
+      }
+    ],
+    "docs": [],
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [
+              " The charity pot account. Will receive the contract funds when at raffle end"
+            ],
+            "indexed": true,
+            "name": "charity_pot",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "docs": [
+          " New raffle created"
+        ],
+        "name": "NewRaffle"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              " The player account"
+            ],
+            "indexed": true,
+            "name": "player",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "docs": [
+          " New player enters the raffle"
+        ],
+        "name": "NewPlayer"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              " The start date"
+            ],
+            "indexed": true,
+            "name": "start_date",
+            "type": {
+              "displayName": [
+                "Timestamp"
+              ],
+              "type": 11
+            }
+          }
+        ],
+        "docs": [
+          " The raffle is started, meaning enough players are playing"
+        ],
+        "name": "RaffleStarted"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              " The winner account"
+            ],
+            "indexed": true,
+            "name": "winner",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          }
+        ],
+        "docs": [
+          " A winner has been picked"
+        ],
+        "name": "WinnerPicked"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "name": "TransferFailed"
+      },
+      {
+        "args": [
+          {
+            "docs": [
+              " The balance amount being tranferred to the charity pot account"
+            ],
+            "indexed": true,
+            "name": "transferred_to_charity_pot",
+            "type": {
+              "displayName": [
+                "Balance"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [
+          " The raffle is closed. All winners have been picked."
+        ],
+        "name": "RaffleClosed"
+      }
+    ],
+    "messages": [
+      {
+        "args": [],
+        "docs": [
+          " The charity pot account. Will receive the contract funds when at raffle end"
+        ],
+        "mutates": false,
+        "name": [
+          "charity_pot"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "AccountId"
+          ],
+          "type": 1
+        },
+        "selector": "0x8135e5b7"
+      },
+      {
+        "args": [],
+        "docs": [
+          " The charity pot account. Will receive the contract funds when at raffle end"
+        ],
+        "mutates": false,
+        "name": [
+          "charity_pot_balance"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Balance"
+          ],
+          "type": 4
+        },
+        "selector": "0x09443b2f"
+      },
+      {
+        "args": [],
+        "docs": [
+          " The winners of this raffle"
+        ],
+        "mutates": false,
+        "name": [
+          "winners"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [],
+          "type": 12
+        },
+        "selector": "0xff444e09"
+      },
+      {
+        "args": [],
+        "docs": [
+          " How many players have played ?"
+        ],
+        "mutates": false,
+        "name": [
+          "players_number"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "u32"
+          ],
+          "type": 5
+        },
+        "selector": "0x27ce4e1b"
+      },
+      {
+        "args": [],
+        "docs": [
+          " The raffle start has soon as the minimum players required is reached"
+        ],
+        "mutates": false,
+        "name": [
+          "is_started"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "bool"
+          ],
+          "type": 10
+        },
+        "selector": "0xa7b6d24a"
+      },
+      {
+        "args": [],
+        "docs": [
+          " The raffle is closed"
+        ],
+        "mutates": false,
+        "name": [
+          "is_closed"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "bool"
+          ],
+          "type": 10
+        },
+        "selector": "0xe00fef72"
+      },
+      {
+        "args": [],
+        "docs": [
+          " The raffle is drawable when it is started and the minimum raffle duration is reached"
+        ],
+        "mutates": false,
+        "name": [
+          "is_drawable"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "bool"
+          ],
+          "type": 10
+        },
+        "selector": "0x23c37086"
+      },
+      {
+        "args": [],
+        "docs": [
+          " Play (you can do this only one time)"
+        ],
+        "mutates": true,
+        "name": [
+          "play"
+        ],
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "Result"
+          ],
+          "type": 14
+        },
+        "selector": "0x3d13a137"
+      },
+      {
+        "args": [],
+        "docs": [
+          " Draw a winner"
+        ],
+        "mutates": true,
+        "name": [
+          "draw"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Result"
+          ],
+          "type": 14
+        },
+        "selector": "0x39f673d5"
+      },
+      {
+        "args": [],
+        "docs": [
+          " Terminate the raffle contract"
+        ],
+        "mutates": true,
+        "name": [
+          "terminate"
+        ],
+        "payable": false,
+        "returnType": null,
+        "selector": "0x9076d1cc"
+      }
+    ]
+  },
+  "storage": {
+    "struct": {
+      "fields": [
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0000000000000000000000000000000000000000000000000000000000000000",
+              "ty": 1
+            }
+          },
+          "name": "charity_pot"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0100000000000000000000000000000000000000000000000000000000000000",
+              "ty": 4
+            }
+          },
+          "name": "charity_pot_balance"
+        },
+        {
+          "layout": {
+            "struct": {
+              "fields": [
+                {
+                  "layout": {
+                    "cell": {
+                      "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
+                      "ty": 5
+                    }
+                  },
+                  "name": "len"
+                },
+                {
+                  "layout": {
+                    "array": {
+                      "cellsPerElem": 1,
+                      "layout": {
+                        "cell": {
+                          "key": "0x0200000001000000000000000000000000000000000000000000000000000000",
+                          "ty": 1
+                        }
+                      },
+                      "len": 4294967295,
+                      "offset": "0x0300000000000000000000000000000000000000000000000000000000000000"
+                    }
+                  },
+                  "name": "elems"
+                }
+              ]
+            }
+          },
+          "name": "players"
+        },
+        {
+          "layout": {
+            "struct": {
+              "fields": [
+                {
+                  "layout": {
+                    "struct": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "cell": {
+                              "key": "0x0200000001000000000000000000000000000000000000000000000000000000",
+                              "ty": 6
+                            }
+                          },
+                          "name": "header"
+                        },
+                        {
+                          "layout": {
+                            "struct": {
+                              "fields": [
+                                {
+                                  "layout": {
+                                    "cell": {
+                                      "key": "0x0300000001000000000000000000000000000000000000000000000000000000",
+                                      "ty": 5
+                                    }
+                                  },
+                                  "name": "len"
+                                },
+                                {
+                                  "layout": {
+                                    "array": {
+                                      "cellsPerElem": 1,
+                                      "layout": {
+                                        "cell": {
+                                          "key": "0x0300000002000000000000000000000000000000000000000000000000000000",
+                                          "ty": 7
+                                        }
+                                      },
+                                      "len": 4294967295,
+                                      "offset": "0x0400000001000000000000000000000000000000000000000000000000000000"
+                                    }
+                                  },
+                                  "name": "elems"
+                                }
+                              ]
+                            }
+                          },
+                          "name": "entries"
+                        }
+                      ]
+                    }
+                  },
+                  "name": "keys"
+                },
+                {
+                  "layout": {
+                    "hash": {
+                      "layout": {
+                        "cell": {
+                          "key": "0x0400000002000000000000000000000000000000000000000000000000000000",
+                          "ty": 9
+                        }
+                      },
+                      "offset": "0x0300000002000000000000000000000000000000000000000000000000000000",
+                      "strategy": {
+                        "hasher": "Blake2x256",
+                        "postfix": "",
+                        "prefix": "0x696e6b20686173686d6170"
+                      }
+                    }
+                  },
+                  "name": "values"
+                }
+              ]
+            }
+          },
+          "name": "unique_players"
+        },
+        {
+          "layout": {
+            "array": {
+              "cellsPerElem": 2,
+              "layout": {
+                "enum": {
+                  "dispatchKey": "0x0800000002000000000000000000000000000000000000000000000000000000",
+                  "variants": {
+                    "0": {
+                      "fields": [
+                        {
+                          "layout": {
+                            "cell": {
+                              "key": "0x0900000002000000000000000000000000000000000000000000000000000000",
+                              "ty": 1
+                            }
+                          },
+                          "name": null
+                        }
+                      ]
+                    },
+                    "1": {
+                      "fields": []
+                    }
+                  }
+                }
+              },
+              "len": 2,
+              "offset": "0x0400000002000000000000000000000000000000000000000000000000000000"
+            }
+          },
+          "name": "winners"
+        },
+        {
+          "layout": {
+            "enum": {
+              "dispatchKey": "0x0800000002000000000000000000000000000000000000000000000000000000",
+              "variants": {
+                "0": {
+                  "fields": [
+                    {
+                      "layout": {
+                        "cell": {
+                          "key": "0x0900000002000000000000000000000000000000000000000000000000000000",
+                          "ty": 11
+                        }
+                      },
+                      "name": null
+                    }
+                  ]
+                },
+                "1": {
+                  "fields": []
+                }
+              }
+            }
+          },
+          "name": "start_date"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0900000002000000000000000000000000000000000000000000000000000000",
+              "ty": 5
+            }
+          },
+          "name": "minimum_players"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0a00000002000000000000000000000000000000000000000000000000000000",
+              "ty": 11
+            }
+          },
+          "name": "minimum_raffle_duration"
+        }
+      ]
+    }
+  },
+  "types": [
+    {
+      "def": {
+        "composite": {
+          "fields": [
+            {
+              "type": 2
+            }
+          ]
+        }
+      },
+      "path": [
+        "ink_env",
+        "types",
+        "AccountId"
+      ]
+    },
+    {
+      "def": {
+        "array": {
+          "len": 32,
+          "type": 3
+        }
+      }
+    },
+    {
+      "def": {
+        "primitive": "u8"
+      }
+    },
+    {
+      "def": {
+        "primitive": "u128"
+      }
+    },
+    {
+      "def": {
+        "primitive": "u32"
+      }
+    },
+    {
+      "def": {
+        "composite": {
+          "fields": [
+            {
+              "name": "last_vacant",
+              "type": 5
+            },
+            {
+              "name": "len",
+              "type": 5
+            },
+            {
+              "name": "len_entries",
+              "type": 5
+            }
+          ]
+        }
+      },
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Header"
+      ]
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "fields": [
+                {
+                  "type": 8
+                }
+              ],
+              "name": "Vacant"
+            },
+            {
+              "fields": [
+                {
+                  "type": 1
+                }
+              ],
+              "name": "Occupied"
+            }
+          ]
+        }
+      },
+      "params": [
+        1
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "Entry"
+      ]
+    },
+    {
+      "def": {
+        "composite": {
+          "fields": [
+            {
+              "name": "next",
+              "type": 5
+            },
+            {
+              "name": "prev",
+              "type": 5
+            }
+          ]
+        }
+      },
+      "path": [
+        "ink_storage",
+        "collections",
+        "stash",
+        "VacantEntry"
+      ]
+    },
+    {
+      "def": {
+        "composite": {
+          "fields": [
+            {
+              "name": "value",
+              "type": 10
+            },
+            {
+              "name": "key_index",
+              "type": 5
+            }
+          ]
+        }
+      },
+      "params": [
+        10
+      ],
+      "path": [
+        "ink_storage",
+        "collections",
+        "hashmap",
+        "ValueEntry"
+      ]
+    },
+    {
+      "def": {
+        "primitive": "bool"
+      }
+    },
+    {
+      "def": {
+        "primitive": "u64"
+      }
+    },
+    {
+      "def": {
+        "array": {
+          "len": 2,
+          "type": 13
+        }
+      }
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "name": "None"
+            },
+            {
+              "fields": [
+                {
+                  "type": 1
+                }
+              ],
+              "name": "Some"
+            }
+          ]
+        }
+      },
+      "params": [
+        1
+      ],
+      "path": [
+        "Option"
+      ]
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "fields": [
+                {
+                  "type": 15
+                }
+              ],
+              "name": "Ok"
+            },
+            {
+              "fields": [
+                {
+                  "type": 16
+                }
+              ],
+              "name": "Err"
+            }
+          ]
+        }
+      },
+      "params": [
+        15,
+        16
+      ],
+      "path": [
+        "Result"
+      ]
+    },
+    {
+      "def": {
+        "tuple": []
+      }
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "discriminant": 0,
+              "name": "UserHasAlreadyPlayed"
+            },
+            {
+              "discriminant": 1,
+              "name": "IncorrectBet"
+            },
+            {
+              "discriminant": 2,
+              "name": "RaffleNotDrawable"
+            },
+            {
+              "discriminant": 3,
+              "name": "RaffleClosed"
+            },
+            {
+              "discriminant": 4,
+              "name": "TransferFailed"
+            }
+          ]
+        }
+      },
+      "path": [
+        "charity_raffle",
+        "charity_raffle",
+        "Error"
+      ]
+    }
+  ]
+}
