@@ -1,27 +1,27 @@
-# Build A Charity Raffle with an Ink contract
+# FRAME Multisig
 
-https://gitcoin.co/issue/Polkadot-Network/hello-world-by-polkadot/3/100023929
+See https://gitcoin.co/issue/Polkadot-Network/hello-world-by-polkadot/8/100023934
+
+I used the previous challenge 'Build a charity Raffle' to implement a multisig transaction :
+- when the 2 winners are selected, the contract transfers the funds to the multisig account of the 2 winners
+- they need to choose and approve the transfer of the funds they have received collectively, to another account, engaging them in a multisig transaction
 
 **What has been done:**
-- Get the [node](https://github.com/substrate-developer-hub/substrate-node-template) and [front-end](https://github.com/substrate-developer-hub/substrate-front-end-template) from substrate templates
-- Add the Contracts pallet using [this tutorial](https://substrate.dev/docs/en/tutorials/add-contracts-pallet/)
-- Create a first simple version of the Charity Raffle contract, with the help of [this video](https://www.crowdcast.io/e/ethereum-apps-moonbeam)
-- Add some unit tests and start validating the contract until everything is fine
-- Deploy the contract and start playing with it using the [polkadot.js/apps](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9944#/contracts)
-![](./CharityRaffleDeployedContract.png)
-- Add the `@polkadot/api-contract` dependency to the front-end
-- Create the Charity Raffle UI component to use an already deployed contract
-- Enhance the Charity Raffle UI to add contract deployment
+- Get the previous contract and ui for the charity raffle challenge
+- Change the contract to remove the charity account parameter
+- On winners selection, build the multisig account and transfer funds to this account
+- Build and deploy this new contract
+- Add the `multisig` pallet to the node runtime
+- Change the Charity Raffle UI Component to remove charity account
+- Add multisig transfer call to the Charity Raffe UI Component
 - Play with the new ui :)
-- Click on **New Raffle For** to deploy the Charity Raffle Contract :
-![](./CharityRaffleCreateRaffleUI.png)
-- Choose amount and play :
-![](./CharityRaffleNewRaffle.png)
-- First player has played :
-![](./CharityRaffleOnePlayer.png)
-- All players have played :
-![](./CharityRaffleFivePlayers.png)
-- After 15 minutes, first winner has been selected :
-![](./CharityRaffleFirstWinner.png)
-- When the 2nd winner is selected, the raffle is close :
-![](./CharityRaffleSecondWinner.png)
+- When the raffle is closed, the winners need to choose another account to transfer funds :
+![](./CharityRaffleWinnersTogether.png)
+- Charlie and Dave won, their multisig account has been funded :
+![](./CharityRaffleCharlieAndDaveAccount.png)
+- Dave choose to transfer to Ferdie, Charlie needs to approve the transfert :
+![](./CharityRaffleCharlieApproveTransfer.png)
+- When the transfert is approved, the winning pot balance is transfered from DaveAndCharlie account to Ferdie
+![](./CharityRaffleFerdieAccount.png)
+- We can check all the transactions in the events list:
+![](./CharityRaffleMultisigMessages.png)
