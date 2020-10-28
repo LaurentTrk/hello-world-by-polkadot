@@ -3,7 +3,7 @@ import {Abi, ContractPromise, BlueprintPromise} from '@polkadot/api-contract';
 
 export const defaultGasLimit = 300000n * 1000000n;
 export const defaultEndowment = 1000000000000000;
-const CharityRaffleCodeHash = '0x2b41e723ed29a1e56b5418ce60ab587c935facde7a638ac5d3bbae0e18194383';
+const CharityRaffleCodeHash = '0x19b6a1fdf679c218004b00eda0490ff27cd9298011825f2af9e42d58640c85a8';
 
 export default function CharityRaffleContract(api) {
     const abi = new Abi(metadata);
@@ -24,28 +24,28 @@ function forgetRaffleContracts() {
     })
 }
 
-function saveContract(contract, abi, charityAccount, contractPromise, api) {
+function saveContract(contract, abi, contractPromise, api) {
     keyring.saveContract(contract.address.toString(), {
         contract: {
             abi: JSON.stringify(abi.json)
         },
-        name: "Raffle contract for " + charityAccount.meta.name,
+        name: "Raffle contract",
         tags: ["raffle"]
     });
     contractPromise(new ContractPromise(api, abi, contract.address));
 }
 
-export async function createCharityRaffleContract(api, accountPair, charityAccount, contractPromise) {
+export async function createCharityRaffleContract(api, accountPair, contractPromise) {
     const abi = new Abi(metadata);
     const blueprint = new BlueprintPromise(api, abi, CharityRaffleCodeHash);
     const unsub = await blueprint.tx
-        .new(defaultEndowment, defaultGasLimit, charityAccount.address, 5, 15*60000)
+        .new(defaultEndowment, defaultGasLimit, 2, 0)
         .signAndSend(accountPair, (result) => {
             if (result.status.isInBlock || result.status.isFinalized) {
                 // here we have an additional field in the result, containing the contract
                 if (result.contract) {
                     forgetRaffleContracts();
-                    saveContract(result.contract, abi, charityAccount, contractPromise, api);
+                    saveContract(result.contract, abi, contractPromise, api);
                 }
                 unsub();
             }
