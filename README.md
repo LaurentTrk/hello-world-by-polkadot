@@ -67,19 +67,22 @@ https://github.com/LaurentTrk/hello-world-by-polkadot/tree/ERC20SmartContract/fr
 19. **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
 20. **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator  
 https://github.com/LaurentTrk/hello-world-by-polkadot/tree/SideCar/frame-development/front-end
+
 21.  **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle  
 Submitted 27/10/2020, 4:22PM
 https://github.com/LaurentTrk/hello-world-by-polkadot/tree/CharityRaffle/frame-development
 
+22. **INTERMEDIATE CHALLENGE** FRAME Multisig  
+Submitted 28/10/2020, 12:46PM
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/CharityRaffleMultiSig/frame-development
 
 ### Doing
--  **INTERMEDIATE CHALLENGE** FRAME Multisig
+-  **ADVANCED CHALLENGE** Build A DApp
 
 
 ### To do
 
 
--  **ADVANCED CHALLENGE** Build A DApp
 -  **INTERMEDIATE CHALLENGE** Deploying An Auction Solidity Contract On Plasm Network
 
 
