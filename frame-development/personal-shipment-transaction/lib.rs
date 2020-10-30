@@ -6,23 +6,36 @@ use ink_lang as ink;
 mod personal_shipment_transaction {
     #[cfg(not(feature = "ink-as-dependency"))]
     use ink_prelude::vec::Vec;
+    use ink_prelude::format;
     use scale::Encode;
+    use ink_env::{ hash::{ Blake2x256 } };
+    use scale::Decode;
+    use ink_storage::{
+        traits::{
+            PackedLayout,
+            SpreadLayout,
+        },
+    };
 
     /// The callback selector must match the selector set on the callback function
-        /// This value is used when the substrate adapter call back this contract
+    /// This value is used when the substrate adapter call back this contract
     const CALLBACK_SELECTOR: &str = "back";
+    /// Oracle Account
+    const ORACLE_ACCOUNT_ID: [u8;32] = [0x58,0x02,0x18,0x7d,0xc2,0xe2,0xec,0xdd,
+                                        0x17,0x98,0x8a,0xdf,0x48,0xb3,0x48,0x81,
+                                        0x6d,0xef,0xc2,0xaa,0x37,0xba,0x41,0xb6,
+                                        0x2a,0x5c,0xdf,0x60,0x45,0x07,0x63,0x3e];
+    /// Oracle Job ID
+    const ORACLE_JOB_ID: &str = "03db560d6e064ac8adc492a82bdd484c";
 
-    // /// Errors that can occur upon calling this contract.
-    // #[derive(Debug, PartialEq, Eq, scale::Encode, scale::Decode)]
-    // #[cfg_attr(feature = "std", derive(::scale_info::TypeInfo))]
-    // pub enum TransactionStatus {
-    //     Initiated,
-    //     ReceiverPaymentReceived,
-    //     GoodsSent,
-    // }
-    const TRANSACTION_INITIATED: u8 = 0;
-    const RECEIVER_PAYMENT_RECEIVED: u8 = 1;
-    const GOODS_SENT: u8 = 2;
+    #[derive(Debug, Copy, Clone, PartialEq, Eq, scale::Encode, scale::Decode, SpreadLayout, PackedLayout)]
+    #[cfg_attr(feature = "std", derive(::scale_info::TypeInfo, ::ink_storage::traits::StorageLayout))]
+    pub enum TransactionStatus {
+        Initiated,
+        ReceiverPaymentReceived,
+        ShippingInitiated,
+        ShippingInProgress,
+    }
 
     #[ink(storage)]
     pub struct PersonalShipmentTransaction {
@@ -30,7 +43,7 @@ mod personal_shipment_transaction {
         receiver: AccountId,
         goods_description: Vec<u8>,
         goods_price: Balance,
-        status: u8,
+        status: TransactionStatus,
 
         receiver_payment: Option<Balance>,
         tracking_number: Option<Vec<u8>>,
@@ -40,7 +53,8 @@ mod personal_shipment_transaction {
     #[derive(Debug, PartialEq, Eq, scale::Encode, scale::Decode)]
     #[cfg_attr(feature = "std", derive(::scale_info::TypeInfo))]
     pub enum Error {
-        /// The callback has been called by a wrong operator account
+        WrongCaller,
+        WrongStatus,
         WrongOperator,
         /// Fee provided does not match minimum required fee
         InsufficientFee,
@@ -66,11 +80,15 @@ mod personal_shipment_transaction {
     impl PersonalShipmentTransaction {
         #[ink(constructor)]
         pub fn new(sender: AccountId, receiver: AccountId, goods_description: Vec<u8>, goods_price: Balance) -> Self {
-            Self { sender, receiver, goods_description, goods_price, status: TRANSACTION_INITIATED, receiver_payment: None, tracking_number: None }
+            if !Self::is_called_by_the_stakeholders(sender, receiver){
+                ink_env::debug_println("Only both sender and receiver could create contract.");
+                panic!("Only both sender and receiver could create contract.")
+            }
+            Self { sender, receiver, goods_description, goods_price, status: TransactionStatus::Initiated, receiver_payment: None, tracking_number: None }
         }
 
         #[ink(message)]
-        pub fn status(&self) -> u8 {
+        pub fn status(&self) -> TransactionStatus {
             self.status
         }
 
@@ -108,11 +126,15 @@ mod personal_shipment_transaction {
         pub fn pay(&mut self) -> Result<()> {
             let caller = self.env().caller();
             if caller != self.receiver {
-                ink_env::debug_println("Callback called by wrong operator.");
+                ink_env::debug_println("Only receiver should pay");
+                return Err(Error::WrongCaller);
+            }
+            if self.status != TransactionStatus::Initiated {
+                ink_env::debug_println("For the receiver to pay, the transaction should be initiated");
                 return Err(Error::WrongOperator);
             }
             self.receiver_payment = Some(self.env().transferred_balance());
-            self.status = RECEIVER_PAYMENT_RECEIVED;
+            self.status = TransactionStatus::ReceiverPaymentReceived;
             Ok(())
         }
 
@@ -120,33 +142,109 @@ mod personal_shipment_transaction {
         pub fn set_tracking_number(&mut self, tracking_number: Vec<u8>) -> Result<()> {
             let caller = self.env().caller();
             if caller != self.sender {
-                ink_env::debug_println("Callback called by wrong operator.");
-                return Err(Error::WrongOperator);
+                ink_env::debug_println("Tracking number has to be set by the sender");
+                return Err(Error::WrongCaller);
             }
-            if self.status != RECEIVER_PAYMENT_RECEIVED {
-                ink_env::debug_println("Callback called by wrong operator.");
+            if self.status != TransactionStatus::ReceiverPaymentReceived {
+                ink_env::debug_println("Tracking number should be set after the payment has been received.");
                 return Err(Error::WrongOperator);
             }
             self.tracking_number = Some(tracking_number);
-            self.status = GOODS_SENT;
+            self.status = TransactionStatus::ShippingInitiated;
             Ok(())
         }
 
         #[ink(message)]
         pub fn update_shipment_status(&mut self) -> Result<()> {
-            Ok(())
+            if self.status == TransactionStatus::Initiated || self.status == TransactionStatus::ReceiverPaymentReceived {
+                ink_env::debug_println("Shipment has not been initiated.");
+                return Err(Error::WrongOperator);
+            }
+            self.send_shipping_status_update_request_from_oracle()
         }
 
         #[ink(message, selector = "0x6261636B")]
         pub fn set_shipment_status(&mut self, value: u128) -> Result<()> {
-            // let caller = self.env().caller();
-            // if caller != self.operator {
-            //     ink_env::debug_println("Callback called by wrong operator.");
-            //     return Err(Error::WrongOperator);
-            // }
-            // self.latest_price = value;
+            if self.status == TransactionStatus::Initiated || self.status == TransactionStatus::ReceiverPaymentReceived {
+                ink_env::debug_println("Shipment has not been initiated.");
+                return Err(Error::WrongOperator);
+            }
+            // TODO : check caller is operator
+            if value == 0 {
+                self.status = TransactionStatus::ShippingInitiated;
+            } else if value == 1 {
+                self.status = TransactionStatus::ShippingInProgress;
+            } else if value == 2 {
+                self.shipment_achieved();
+            }
             Ok(())
         }
+
+        #[ink(message)]
+        pub fn cancel(&mut self) -> Result<()> {
+            if !Self::is_called_by_the_stakeholders(self.sender, self.receiver){
+                ink_env::debug_println("Only both sender and receiver could cancel the transaction.");
+                return Err(Error::WrongOperator);
+            }
+            if let Some(payment)  = self.receiver_payment {
+                let transfer_result = self.env().transfer(self.receiver, payment);
+                if transfer_result.is_err() {
+                    ink_env::debug_println("Transfer failed.");
+                    return Err(Error::WrongOperator)
+                }
+            }
+            // TODO : transfer the half of the balance to the receiver
+            self.env().terminate_contract(self.sender);
+        }
+
+        fn shipment_achieved(&mut self) -> Result<()> {
+            let transfer_result = self.env().transfer(self.sender, self.goods_price);
+            if transfer_result.is_err() {
+                ink_env::debug_println("Transfer failed.");
+                return Err(Error::WrongOperator)
+            }
+            // TODO : transfer the half of the balance to the receiver
+            self.env().terminate_contract(self.sender);
+        }
+
+        fn is_called_by_the_stakeholders(sender: AccountId, receiver: AccountId) -> bool {
+            let stakeholders = PersonalShipmentTransaction::create_multisig_address(&[sender, receiver],2);
+            let stakeholders_reverse = PersonalShipmentTransaction::create_multisig_address(&[receiver, sender],2);
+            let caller = Self::env().caller();
+            caller == stakeholders || caller == stakeholders_reverse
+        }
+
+        // From https://substrate.dev/rustdocs/v2.0.0-rc6/src/pallet_multisig/lib.rs.html#518
+        fn create_multisig_address(who: &[AccountId], threshold: u16) -> AccountId{
+            // TODO : we need to sort the who adresses
+            // See https://github.com/polkadot-js/common/blob/56a79924a066ffbc31ea5fae30fe5e81aa913e66/packages/util/src/u8a/sorted.ts
+            let entropy = (b"modlpy/utilisuba", who, threshold);
+            let mut output = [0;32];
+            ink_env::hash_encoded::<Blake2x256, _>(&entropy, &mut output);
+            AccountId::decode(&mut &output[..]).unwrap_or_default()
+        }
+
+        /// Initiate a request to the given oracle operator
+        fn send_shipping_status_update_request_from_oracle(&mut self)-> Result<()> {
+            let request_id = 7093;
+            let operator = AccountId::decode(&mut &ORACLE_ACCOUNT_ID[..]).unwrap_or_default();
+            if let Some(tracking_number) = &self.tracking_number {
+                let parameters = ("trackingNumber", tracking_number);
+
+                Self::env().emit_event(OracleRequest {
+                    operator: operator,
+                    spec_index: ORACLE_JOB_ID.into(),
+                    request_identifier: request_id,
+                    who: self.env().account_id(),
+                    data_version: 1,
+                    bytes: parameters.encode(),
+                    function:  CALLBACK_SELECTOR.into(),
+                    fee: 93
+                });
+            }
+            Ok(())
+        }
+
     }
 
     /// Unit tests.t
@@ -168,8 +266,16 @@ mod personal_shipment_transaction {
 
         #[ink::test]
         fn new_works() {
-            let mut price_feed = ChainlinkPriceFeed::new();
-            price_feed.set_value(70);
+         }
+
+        #[ink::test]
+        fn multisig_address_should_work() {
+            let multisig_address = PersonalShipmentTransaction::create_multisig_address(&[default_accounts().alice, default_accounts().bob],2);
+            let multisig_address_invert = PersonalShipmentTransaction::create_multisig_address(&[default_accounts().bob, default_accounts().alice],2);
+
+            println!("{:?}", multisig_address);
+            println!("{:?}", multisig_address_invert);
+
         }
 
         fn default_accounts() -> ink_env::test::DefaultAccounts<ink_env::DefaultEnvironment> {
