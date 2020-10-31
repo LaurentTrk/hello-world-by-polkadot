@@ -298,6 +298,23 @@ impl pallet_contracts::Trait for Runtime {
 	type WeightPrice = pallet_transaction_payment::Module<Self>;
 }
 
+parameter_types! {
+	pub const DepositBase: Balance = 1;
+	pub const DepositFactor: Balance = 1;
+	pub const MaxSignatories: u16 = 4;
+}
+
+impl pallet_multisig::Trait for Runtime {
+	type Event = Event;
+	type Call = Call;
+	type Currency = Balances;
+	type DepositBase = ();
+	type DepositFactor = ExistentialDeposit;
+	type MaxSignatories = MaxSignatories;
+	type WeightInfo = ();
+}
+
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime where
@@ -316,6 +333,7 @@ construct_runtime!(
 		// Include the custom logic from the template pallet in the runtime.
 		TemplateModule: pallet_template::{Module, Call, Storage, Event<T>},
 		Contracts: pallet_contracts::{Module, Call, Config, Storage, Event<T>},
+		Multisig: pallet_multisig::{Module, Call, Storage, Event<T>},
 	}
 );
 
