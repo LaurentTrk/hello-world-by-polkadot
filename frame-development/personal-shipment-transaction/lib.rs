@@ -6,7 +6,6 @@ use ink_lang as ink;
 mod personal_shipment_transaction {
     #[cfg(not(feature = "ink-as-dependency"))]
     use ink_prelude::vec::Vec;
-    use ink_prelude::format;
     use scale::Encode;
     use ink_env::{ hash::{ Blake2x256 } };
     use scale::Decode;
@@ -34,7 +33,9 @@ mod personal_shipment_transaction {
         Initiated,
         ReceiverPaymentReceived,
         ShippingInitiated,
-        ShippingInProgress,
+        ShippingStarted,
+        ParcelOnItsWay,
+        ParcelReceived,
     }
 
     #[ink(storage)]
@@ -44,8 +45,9 @@ mod personal_shipment_transaction {
         goods_description: Vec<u8>,
         goods_price: Balance,
         status: TransactionStatus,
+        status_refreshing: bool,
 
-        receiver_payment: Option<Balance>,
+        receiver_payment: Balance,
         tracking_number: Option<Vec<u8>>,
     }
 
@@ -84,12 +86,32 @@ mod personal_shipment_transaction {
                 ink_env::debug_println("Only both sender and receiver could create contract.");
                 panic!("Only both sender and receiver could create contract.")
             }
-            Self { sender, receiver, goods_description, goods_price, status: TransactionStatus::Initiated, receiver_payment: None, tracking_number: None }
+            Self {  sender,
+                    receiver,
+                    goods_description,
+                    goods_price,
+                    status: TransactionStatus::Initiated,
+                    status_refreshing: false,
+                    receiver_payment: 0,
+                    tracking_number: None
+            }
         }
 
         #[ink(message)]
-        pub fn status(&self) -> TransactionStatus {
-            self.status
+        pub fn status(&self) -> Vec<u8> {
+            match self.status{
+                TransactionStatus::Initiated => { "Transaction initiated".into() }
+                TransactionStatus::ReceiverPaymentReceived => { "Receiver payment done".into() }
+                TransactionStatus::ShippingInitiated => { "Tracking number has been issued".into() }
+                TransactionStatus::ShippingStarted => { "Parcel has been picked up by the carrier".into() }
+                TransactionStatus::ParcelOnItsWay => { "Parcel is on its way".into() }
+                TransactionStatus::ParcelReceived => { "Parcel has been received".into() }
+            }
+        }
+
+        #[ink(message)]
+        pub fn status_refreshing(&self) -> bool {
+            self.status_refreshing
         }
 
         #[ink(message)]
@@ -113,7 +135,7 @@ mod personal_shipment_transaction {
         }
 
         #[ink(message)]
-        pub fn receiver_payment(&self) -> Option<Balance> {
+        pub fn receiver_payment(&self) -> Balance {
             self.receiver_payment
         }
 
@@ -133,7 +155,7 @@ mod personal_shipment_transaction {
                 ink_env::debug_println("For the receiver to pay, the transaction should be initiated");
                 return Err(Error::WrongOperator);
             }
-            self.receiver_payment = Some(self.env().transferred_balance());
+            self.receiver_payment = self.env().transferred_balance();
             self.status = TransactionStatus::ReceiverPaymentReceived;
             Ok(())
         }
@@ -165,29 +187,33 @@ mod personal_shipment_transaction {
 
         #[ink(message, selector = "0x6261636B")]
         pub fn set_shipment_status(&mut self, value: u128) -> Result<()> {
+            // Assume status is no more refreshing, even if there are some errors
+            self.status_refreshing = false;
             if self.status == TransactionStatus::Initiated || self.status == TransactionStatus::ReceiverPaymentReceived {
                 ink_env::debug_println("Shipment has not been initiated.");
                 return Err(Error::WrongOperator);
             }
             // TODO : check caller is operator
             if value == 0 {
-                self.status = TransactionStatus::ShippingInitiated;
+                self.status = TransactionStatus::ShippingStarted;
             } else if value == 1 {
-                self.status = TransactionStatus::ShippingInProgress;
+                self.status = TransactionStatus::ParcelOnItsWay;
             } else if value == 2 {
-                self.shipment_achieved();
+                self.status = TransactionStatus::ParcelReceived;
+                return self.shipment_achieved()
             }
             Ok(())
         }
 
         #[ink(message)]
         pub fn cancel(&mut self) -> Result<()> {
+            self.status_refreshing = false;
             if !Self::is_called_by_the_stakeholders(self.sender, self.receiver){
                 ink_env::debug_println("Only both sender and receiver could cancel the transaction.");
                 return Err(Error::WrongOperator);
             }
-            if let Some(payment)  = self.receiver_payment {
-                let transfer_result = self.env().transfer(self.receiver, payment);
+            if self.receiver_payment > 0 {
+                let transfer_result = self.env().transfer(self.receiver, self.receiver_payment);
                 if transfer_result.is_err() {
                     ink_env::debug_println("Transfer failed.");
                     return Err(Error::WrongOperator)
@@ -230,7 +256,7 @@ mod personal_shipment_transaction {
             let operator = AccountId::decode(&mut &ORACLE_ACCOUNT_ID[..]).unwrap_or_default();
             if let Some(tracking_number) = &self.tracking_number {
                 let parameters = ("trackingNumber", tracking_number);
-
+                self.status_refreshing = true;
                 Self::env().emit_event(OracleRequest {
                     operator: operator,
                     spec_index: ORACLE_JOB_ID.into(),
