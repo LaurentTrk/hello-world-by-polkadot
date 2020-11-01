@@ -39,7 +39,7 @@ function Main(props) {
         return accountFound;
     }
 
-    const keyringOptions = keyring.getPairs().map(account => ({
+    const keyringOptions = keyring.getPairs().filter(account=> account.address !== accountPair.address).map(account => ({
         key: account.address,
         value: account.address,
         text: account.meta.name ? account.meta.name.toUpperCase():account.address,
@@ -58,6 +58,7 @@ function Main(props) {
     const [transactionStatus, setTransactionStatus] = useState('');
     const [statusRefreshing, setStatusRefreshing] = useState(false);
     const [signaturePending, setSignaturePending] = useState(false);
+    const [contractTerminatedNotice, setContractTerminatedNotice] = useState(null);
 
     const onSelectReceiver = async (address) => {
         setReceiver(findAccountByAddress(address));
@@ -66,7 +67,8 @@ function Main(props) {
         if (multiSigTimePoint){
             setMultiSigTimePoint(multiSigTimePoint);
         }
-        // TODO : retrieve contract values from pending non approved trnasaction
+        setContractTerminatedNotice(null);
+        // TODO : retrieve contract values from pending non approved transaction
     }
 
     const retrievePendingNonApprovedTransaction = async (senderAddress, receiverAddress) => {
@@ -91,7 +93,6 @@ function Main(props) {
 
     const pay = () => {
         const paymentAmount = goodsValueNumber();
-        console.log(paymentAmount);
         personalShipmentTransactionContract.tx.pay(goodsValueNumber(), defaultGasLimit).signAndSend(accountPair, () => {
         });
     }
@@ -289,7 +290,6 @@ function Main(props) {
         personalShipmentTransactionContract && personalShipmentTransactionContract.query.receiver(accountPair.address, 0, defaultGasLimit).then((account) => {
             console.log(account);
             if (account.output) {
-                console.log("Receiver", account.output.toHuman());
                 setReceiver(findAccountByAddress(account.output.toHuman()));
             }
         });
@@ -298,7 +298,6 @@ function Main(props) {
         personalShipmentTransactionContract && personalShipmentTransactionContract.query.sender(accountPair.address, 0, defaultGasLimit).then((account) => {
             console.log(account);
             if (account.output) {
-                console.log("Sender", account.output.toHuman());
                 setSender(findAccountByAddress(account.output.toHuman()));
             }
         });
@@ -362,6 +361,7 @@ function Main(props) {
                 updateStatusRefreshing();
             }else{
                 console.log("No contract info")
+                setContractTerminatedNotice("Contract between " + findAccountNameByAddress(sender.address) + " and " + findAccountNameByAddress(receiver.address) + " is terminated.");
                 forgetContract(personalShipmentTransactionContract.address);
                 setStatusRefreshing(false);
             }
@@ -389,7 +389,7 @@ function Main(props) {
         {!trackingNumber && <Step.Content>
             <Step.Title>Shipping</Step.Title>
         </Step.Content>}
-        {trackingNumber &&     <Button as='div' labelPosition='right'  onClick={refresh}>
+        {trackingNumber &&     <Button as='div' labelPosition='right'  onClick={refresh} disabled={statusRefreshing} >
             <Button loading={statusRefreshing} color='green'>
                 <Icon name='refresh' />
                 Shipping Status
@@ -426,9 +426,33 @@ function Main(props) {
         return goodsValue;
     }
 
+    const goodsValueHuman = () => {
+        if (goodsValue && goodsValue.toNumber){
+            return goodsValue.toNumber() / ONE_UNIT;
+        }
+        return goodsValue / ONE_UNIT;
+    }
+
     return (
         <Grid.Column>
-            <h1>Peer To Peer Shipment Transaction</h1>
+            <h1>Peer To Peer Shipment Transaction Simulation</h1>
+
+            <Message info floating>
+                <Message.Header>Simulate Transaction with Shipment between 2 individuals</Message.Header>
+                <Message.List>
+                    <Message.Item>Select a user to start a transaction. Input goods description, value and validate </Message.Item>
+                    <Message.Item>Switch to the receiver account to approve this transaction</Message.Item>
+                    <Message.Item>As the receiver, pay the good value to the contract</Message.Item>
+                    <Message.Item>As the sender, input Tracking Number</Message.Item>
+                    <Message.Item>Refresh shipping status will ask an external Tracking API (mocked) through a Chainlink Node</Message.Item>
+                    <Message.Item>When the parcel is received (after 3 status refresh), the good value is transferred to the sender and the contract is terminated</Message.Item>
+                </Message.List>
+            </Message>
+
+            {contractTerminatedNotice != null && <Message success floating>
+                <Message.Header>{contractTerminatedNotice}</Message.Header>
+            </Message>}
+
             { accountPair && !contractIsSet() && !receiver && <Segment placeholder>
                 <Header icon>
                     <Icon name='send' />
@@ -477,17 +501,18 @@ function Main(props) {
                                 label={{ basic: true, content: 'Unit' }}
                                 labelPosition='right'
                                 placeholder='Goods value...'
+                                error={goodsValue >= 10 * ONE_UNIT}
                                 onChange={(_, { value }) => setGoodsValue(parseInt(value, 10) * ONE_UNIT)}
                                 disabled={multiSigTimePoint != null}
                             />
                         </Form.Field>
                         {sender && receiver && sender.address === accountPair.address && multiSigTimePoint == null && <React.Fragment>
                             <Button type='submit' onClick={newTransactionContract}
-                                    disabled={goodsValue === 0 || goodsDescription === ""}
+                                    disabled={goodsValue === 0 || goodsDescription === "" || signaturePending || goodsValue >= 10 * ONE_UNIT}
                                     loading={signaturePending}>
                                 Start New Transaction
                             </Button>
-                            <Button onClick={()=>{ setSender(null);setReceiver(null);}} color={'red'}>Cancel</Button>
+                            <Button onClick={()=>{ setSender(null);setReceiver(null);}} color={'red'} disabled={signaturePending}>Cancel</Button>
                         </React.Fragment>
                         }
                         {sender && receiver && receiver.address === accountPair.address && multiSigTimePoint != null &&
@@ -505,11 +530,11 @@ function Main(props) {
 
             {personalShipmentTransactionContract && sender && receiver && goodsValue && <React.Fragment>
                 <Message>
-                    <Message.Header>{findAccountNameByAddress(sender.address)} and {findAccountNameByAddress(receiver.address)} Agreement</Message.Header>
+                    <Message.Header>{findAccountNameByAddress(sender.address)} and {findAccountNameByAddress(receiver.address)} Agreement #{personalShipmentTransactionContract ? personalShipmentTransactionContract.address.toHuman():"Terminated"}</Message.Header>
                     <Message.List>
                         <Message.Item>{findAccountNameByAddress(receiver.address)} is committed to buy {goodsDescription} from {findAccountNameByAddress(sender.address)}</Message.Item>
                         <Message.Item>{findAccountNameByAddress(sender.address)} is committed to send {goodsDescription} to {findAccountNameByAddress(receiver.address)}</Message.Item>
-                        <Message.Item>{findAccountNameByAddress(receiver.address)} is committed to pay {goodsValue.toHuman ? goodsValue.toHuman():goodsValue} to {findAccountNameByAddress(sender.address)}</Message.Item>
+                        <Message.Item>{findAccountNameByAddress(receiver.address)} is committed to pay {goodsValueHuman()} to {findAccountNameByAddress(sender.address)}</Message.Item>
                     </Message.List>
                 </Message>
                 <Step.Group>
@@ -520,7 +545,7 @@ function Main(props) {
                             <Step.Description>{paymentDescription()}</Step.Description>
                         </Step.Content> }
                         { isReceiver() && receiverPayment < goodsValueNumber() && <Step.Content>
-                            <Button color={'green'} onClick={pay}>Pay</Button>
+                            <Button color={'green'} onClick={pay}>Pay {goodsValueHuman()} Unit</Button>
                         </Step.Content> }
                     </Step>
 
@@ -550,6 +575,17 @@ function Main(props) {
                     {cancelTransactionStep()}
                 </Step.Group>
             </React.Fragment>}
+
+            <Message warning floating>
+                <Message.Header>Limitations and Known issues</Message.Header>
+                <Message.List>
+                    <Message.Item>The contract is stored in the keyring, using the browser local storage, so you need to play with a single browser instance.</Message.Item>
+                    <Message.Item>We assume there is only one pending transaction at a time. If not, the UI will be confused ;)</Message.Item>
+                    <Message.Item>The Cancel Transaction operation should be approved by both stakeholders.</Message.Item>
+                    <Message.Item>Goods max value is 10 Units excluded.</Message.Item>
+                </Message.List>
+            </Message>
+
         </Grid.Column>
     );
 }
