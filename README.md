@@ -1,90 +1,93 @@
-![](https://user-images.githubusercontent.com/48550657/95865108-8f7b9b80-0d66-11eb-97c5-e52360f196f8.png)
-
-
-# [Hello World! by Polkadot](https://gitcoin.co/hackathon/polkadot/onboard?utm_source=github&utm_medium=referral&utm_campaign=hello+world)
-
-**Gitcoin has integrated [Polkadot](https://polkadot.network/) and [Kusama](https://kusama.network/) tokens (DOT and KSM) into its tech stack**, making them one of the first full integrations outside of the Ethereum ecosystem.
-
-To celebrate the integration on Gitcoin, we are organising **[Hello World! by Polkadot](https://gitcoin.co/hackathon/polkadot/onboard?utm_source=github&utm_medium=referral&utm_campaign=hello+world)**, a series of challenges to bring you on a journey of Polkadot development discovery.
-
-**[Check out the kick-off webinar for more details and information.](https://www.crowdcast.io/e/gitcoin-hello-world-by-polkadot)**
-
-## Challenges and prizes 
-
-The challenges are in four categories: (1) Beginner, (2) Intermediate, (3) Advanced, and (4) Ecosystem. The first three are written specifically for Polkadot and Kusama, whereas the Ecosystem category is made up of challenges created by Polkadot ecosystem projects. Challenge payouts are capped at 50, meaning that only the first fifty valid submissions will receive a payout.
-
-| Challenge  | #  | Prize  | Cap  |
-|---|---|---|---|
-| Beginner  |  7  | 3 DOT  |  50 |
-| Intermediate  | 5   | 1 KSM  | 50  |
-| Advanced  | 4  | 10 DOT  | 50  |
-| Ecosystem  | 8   | 5 DOT  | 50  |
-
-### **In addition, there is an EXTRA PRIZE of 150 DOT for the first 50 that manage to complete 18 or more challenges.**
-
-Everyone successfully solving any challenge and receiving a payout will also get an awesome piece of Polkadot swag as well as a Kusama-based NFT, issued via [RMRK](https://rmrk.app/).
-
-## Deadlines
-- Open registrations: October 8th
-- Challenges go live: October 15th
-- Duration: 4 weeks
-- End: November 12th, or after all challenges are solved
-- Prize distribution period: up to two weeks after the event
-
------------------------------------------
-
-## [Head over to Hello World! by Polkadot and solve some awesome challenges!](https://gitcoin.co/hackathon/polkadot/onboard?utm_source=github&utm_medium=referral&utm_campaign=hello+world)
-
-## Challenges
-
 ### Submitted
 
-1. **BEGINNER CHALLENGE** Set An Identity On Kusama Or Polkadot's Development Version
-2. **BEGINNER CHALLENGE** Run A Kusama Or Polkadot Node And Add It To Telemetry
-3. **BEGINNER CHALLENGE** Front-End Javascript  
-18 7h44PM
-https://github.com/LaurentTrk/hello-world-by-polkadot/tree/FrontEnd/frame-development/front-end
-https://kidot.ltk.codes:943/
+7. **BEGINNER CHALLENGE** Launch A Local Substrate Development Chain  
+16/10/2020, 8:08AM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/LocalDevSubstrateChain.png  
 
-4. **BEGINNER CHALLENGE** Back-End Javascript 
-5. **BEGINNER CHALLENGE** Play With Westend
-6. **BEGINNER CHALLENGE** Run A Private Substrate Network
-7. **BEGINNER CHALLENGE** Launch A Local Substrate Development Chain
-8. **BEGINNER CHALLENGE** Deploying Solidity Contract On Plasm Network V1
-9. **INTERMEDIATE CHALLENGE** Forkless Upgrades
-10. **INTERMEDIATE CHALLENGE** FRAME Identity: Set An Identity On A Local --Dev Chain
-11. **INTERMEDIATE CHALLENGE** FRAME Development
-12. **INTERMEDIATE CHALLENGE** Smart Contracts - Write An ERC-20 Smart Contract With Ink!  
-19 3:05PM
-https://github.com/LaurentTrk/hello-world-by-polkadot/tree/ERC20SmartContract/frame-development
+8. **BEGINNER CHALLENGE** Deploying Solidity Contract On Plasm Network V1  
+16/10/2020, 9:57AM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/plasm-solidity-contract/flipper.md  
 
-13. **ECOSYSTEM CHALLENGE** (Beginner) Build And Run A Local Phala Network
-14. **ECOSYSTEM CHALLENGE** (Advanced) Build The First Confidential Contract
-15. **ECOSYSTEM CHALLENGE** Using Remix And MetaMask On Moonbeam
-16. **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle
-17. **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support
-18. **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support
-19. **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts
-20. **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator  
-https://github.com/LaurentTrk/hello-world-by-polkadot/tree/SideCar/frame-development/front-end
+1. **BEGINNER CHALLENGE** Set An Identity On Kusama Or Polkadot's Development Version  
+16/10/2020, 10:20AM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/PolkadotIdentity.png
 
-21.  **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle  
-Submitted 27/10/2020, 4:22PM
-https://github.com/LaurentTrk/hello-world-by-polkadot/tree/CharityRaffle/frame-development
+6. **BEGINNER CHALLENGE** Run A Private Substrate Network  
+16/10/2020, 11:41AM    
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/private-network/SecondPrivateNode.png  
 
-22. **INTERMEDIATE CHALLENGE** FRAME Multisig  
-Submitted 28/10/2020, 12:46PM
-https://github.com/LaurentTrk/hello-world-by-polkadot/tree/CharityRaffleMultiSig/frame-development
+4. **BEGINNER CHALLENGE** Back-End Javascript   
+16/10/2020, 1:50PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/main/use-api-backend  
 
-### Doing
--  **ADVANCED CHALLENGE** Build A DApp
+13. **ECOSYSTEM CHALLENGE** (Beginner) Build And Run A Local Phala Network  
+16/10/2020, 4:34PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/phala/README.md  
 
+5. **BEGINNER CHALLENGE** Play With Westend  
+16/10/2020, 9:15PM  
+https://westend.subscan.io/extrinsic/2658540-2  
 
-### To do
+9. **INTERMEDIATE CHALLENGE** Forkless Upgrades  
+16/10/2020, 11:11PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/LastRuntimeUpgrade.png  
 
+10. **INTERMEDIATE CHALLENGE** FRAME Identity: Set An Identity On A Local --Dev Chain  
+16/10/2020, 11:55PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/LocalIdentity.png  
 
--  **INTERMEDIATE CHALLENGE** Deploying An Auction Solidity Contract On Plasm Network
+11. **INTERMEDIATE CHALLENGE** FRAME Development  
+17/10/2020, 5:33PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/FrameDevelopment/frame-development  
 
+2. **BEGINNER CHALLENGE** Run A Kusama Or Polkadot Node And Add It To Telemetry  
+17/10/2020, 9:39PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/KusamaNodeTelemetry.png  
 
--  **EXTRA PRIZE** Complete 18 Or More Challenges - 150 DOT For The First 50 Valid Submissions
+14. **ECOSYSTEM CHALLENGE** (Advanced) Build The First Confidential Contract  
+17/10/2020, 10:31PM  
+https://twitter.com/laurenttrk/status/1317562506538323970  
 
+15. **ECOSYSTEM CHALLENGE** Using Remix And MetaMask On Moonbeam  
+17/10/2020, 11:39PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/moonbeam/README.md  
+
+3. **BEGINNER CHALLENGE** Front-End Javascript    
+18/10/2020, 7:44PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/FrontEnd/frame-development/front-end  
+
+12. **INTERMEDIATE CHALLENGE** Smart Contracts - Write An ERC-20 Smart Contract With Ink!    
+19/10/2020, 3:05PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/ERC20SmartContract/frame-development  
+
+17. **ECOSYSTEM CHALLENGE** Acala - Enable NFT Support  
+19/10/2020, 6:55PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/NFTSupport/frame-development  
+
+18. **ECOSYSTEM CHALLENGE** Acala - Enable Multi-Currency Support  
+19/10/2020, 10:39PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/MultiCurrencySupport/frame-development  
+
+16. **ECOSYSTEM CHALLENGE** Deploy On Moonbase Alpha Using Truffle  
+21/10/2020, 9:42PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/main/moonbeam/truffle/README.md  
+
+19. **ADVANCED CHALLENGE** REST APIs - Read An Account's Pending Payouts  
+21/10/2020, 10:37PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/blob/SideCar/frame-development/stakingPayouts.py  
+
+20. **ADVANCED CHALLENGE** REST APIs - Build A Transaction Fee Estimator    
+22/10/2020, 11:34PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/SideCar/frame-development/front-end  
+
+21.  **ADVANCED CHALLENGE** Smart Contracts - Build A Charity Raffle    
+27/10/2020, 4:22PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/CharityRaffle/frame-development  
+
+22. **INTERMEDIATE CHALLENGE** FRAME Multisig    
+28/10/2020, 12:46PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/CharityRaffleMultiSig/frame-development  
+
+23. **ADVANCED CHALLENGE** Build A DApp  
+01/11/2020, 11:45PM  
+https://github.com/LaurentTrk/hello-world-by-polkadot/tree/dapp/frame-development  
