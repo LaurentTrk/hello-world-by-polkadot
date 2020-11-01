@@ -1,0 +1,657 @@
+{
+  "metadataVersion": "0.1.0",
+  "source": {
+    "hash": "0x397e22075073cb538c503fb1297cffc230e8132b5d3af98b55ebccfd2b773238",
+    "language": "ink! 3.0.0-rc2",
+    "compiler": "rustc 1.47.0-nightly"
+  },
+  "contract": {
+    "name": "personal_shipment_transaction",
+    "version": "0.1.0",
+    "authors": [
+      "LaurentTrk <[laurent.turek@gmail.com]>"
+    ],
+    "description": "Shipment Transacction Contract between 2 individuals"
+  },
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "name": "sender",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "name": "receiver",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "name": "goods_description",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "name": "goods_price",
+            "type": {
+              "displayName": [
+                "Balance"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "name": [
+          "new"
+        ],
+        "selector": "0xd183512b"
+      }
+    ],
+    "docs": [],
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": true,
+            "name": "operator",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "name": "spec_index",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "name": "request_identifier",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 11
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "name": "who",
+            "type": {
+              "displayName": [
+                "AccountId"
+              ],
+              "type": 1
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "name": "data_version",
+            "type": {
+              "displayName": [
+                "u64"
+              ],
+              "type": 11
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "name": "bytes",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "name": "function",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 4
+            }
+          },
+          {
+            "docs": [],
+            "indexed": false,
+            "name": "fee",
+            "type": {
+              "displayName": [
+                "u32"
+              ],
+              "type": 12
+            }
+          }
+        ],
+        "docs": [
+          " Initiating a new Oracle Request",
+          " This event will be catch by the Chainlink External Initiator"
+        ],
+        "name": "OracleRequest"
+      }
+    ],
+    "messages": [
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "status"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Vec"
+          ],
+          "type": 4
+        },
+        "selector": "0x432202eb"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "status_refreshing"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "bool"
+          ],
+          "type": 6
+        },
+        "selector": "0x5cd7e4a3"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "sender"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "AccountId"
+          ],
+          "type": 1
+        },
+        "selector": "0xf6a16af6"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "receiver"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "AccountId"
+          ],
+          "type": 1
+        },
+        "selector": "0xa87114fd"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "goods_description"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Vec"
+          ],
+          "type": 4
+        },
+        "selector": "0xafb381f1"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "goods_price"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Balance"
+          ],
+          "type": 5
+        },
+        "selector": "0x3db15693"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "receiver_payment"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Balance"
+          ],
+          "type": 5
+        },
+        "selector": "0xa55bfc97"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": false,
+        "name": [
+          "tracking_number"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Option"
+          ],
+          "type": 7
+        },
+        "selector": "0xb8603b88"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": true,
+        "name": [
+          "pay"
+        ],
+        "payable": true,
+        "returnType": {
+          "displayName": [
+            "Result"
+          ],
+          "type": 8
+        },
+        "selector": "0x7d179481"
+      },
+      {
+        "args": [
+          {
+            "name": "tracking_number",
+            "type": {
+              "displayName": [
+                "Vec"
+              ],
+              "type": 4
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": true,
+        "name": [
+          "set_tracking_number"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Result"
+          ],
+          "type": 8
+        },
+        "selector": "0xf6e2c4a0"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": true,
+        "name": [
+          "update_shipment_status"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Result"
+          ],
+          "type": 8
+        },
+        "selector": "0x61f83854"
+      },
+      {
+        "args": [
+          {
+            "name": "value",
+            "type": {
+              "displayName": [
+                "u128"
+              ],
+              "type": 5
+            }
+          }
+        ],
+        "docs": [],
+        "mutates": true,
+        "name": [
+          "set_shipment_status"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Result"
+          ],
+          "type": 8
+        },
+        "selector": "0x6261636b"
+      },
+      {
+        "args": [],
+        "docs": [],
+        "mutates": true,
+        "name": [
+          "cancel"
+        ],
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "Result"
+          ],
+          "type": 8
+        },
+        "selector": "0x898fa41a"
+      }
+    ]
+  },
+  "storage": {
+    "struct": {
+      "fields": [
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0000000000000000000000000000000000000000000000000000000000000000",
+              "ty": 1
+            }
+          },
+          "name": "sender"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0100000000000000000000000000000000000000000000000000000000000000",
+              "ty": 1
+            }
+          },
+          "name": "receiver"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0200000000000000000000000000000000000000000000000000000000000000",
+              "ty": 4
+            }
+          },
+          "name": "goods_description"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0300000000000000000000000000000000000000000000000000000000000000",
+              "ty": 5
+            }
+          },
+          "name": "goods_price"
+        },
+        {
+          "layout": {
+            "enum": {
+              "dispatchKey": "0x0400000000000000000000000000000000000000000000000000000000000000",
+              "variants": {
+                "0": {
+                  "fields": []
+                },
+                "1": {
+                  "fields": []
+                },
+                "2": {
+                  "fields": []
+                },
+                "3": {
+                  "fields": []
+                },
+                "4": {
+                  "fields": []
+                },
+                "5": {
+                  "fields": []
+                }
+              }
+            }
+          },
+          "name": "status"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0500000000000000000000000000000000000000000000000000000000000000",
+              "ty": 6
+            }
+          },
+          "name": "status_refreshing"
+        },
+        {
+          "layout": {
+            "cell": {
+              "key": "0x0600000000000000000000000000000000000000000000000000000000000000",
+              "ty": 5
+            }
+          },
+          "name": "receiver_payment"
+        },
+        {
+          "layout": {
+            "enum": {
+              "dispatchKey": "0x0700000000000000000000000000000000000000000000000000000000000000",
+              "variants": {
+                "0": {
+                  "fields": [
+                    {
+                      "layout": {
+                        "cell": {
+                          "key": "0x0800000000000000000000000000000000000000000000000000000000000000",
+                          "ty": 4
+                        }
+                      },
+                      "name": null
+                    }
+                  ]
+                },
+                "1": {
+                  "fields": []
+                }
+              }
+            }
+          },
+          "name": "tracking_number"
+        }
+      ]
+    }
+  },
+  "types": [
+    {
+      "def": {
+        "composite": {
+          "fields": [
+            {
+              "type": 2
+            }
+          ]
+        }
+      },
+      "path": [
+        "ink_env",
+        "types",
+        "AccountId"
+      ]
+    },
+    {
+      "def": {
+        "array": {
+          "len": 32,
+          "type": 3
+        }
+      }
+    },
+    {
+      "def": {
+        "primitive": "u8"
+      }
+    },
+    {
+      "def": {
+        "sequence": {
+          "type": 3
+        }
+      }
+    },
+    {
+      "def": {
+        "primitive": "u128"
+      }
+    },
+    {
+      "def": {
+        "primitive": "bool"
+      }
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "name": "None"
+            },
+            {
+              "fields": [
+                {
+                  "type": 4
+                }
+              ],
+              "name": "Some"
+            }
+          ]
+        }
+      },
+      "params": [
+        4
+      ],
+      "path": [
+        "Option"
+      ]
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "fields": [
+                {
+                  "type": 9
+                }
+              ],
+              "name": "Ok"
+            },
+            {
+              "fields": [
+                {
+                  "type": 10
+                }
+              ],
+              "name": "Err"
+            }
+          ]
+        }
+      },
+      "params": [
+        9,
+        10
+      ],
+      "path": [
+        "Result"
+      ]
+    },
+    {
+      "def": {
+        "tuple": []
+      }
+    },
+    {
+      "def": {
+        "variant": {
+          "variants": [
+            {
+              "discriminant": 0,
+              "name": "WrongCaller"
+            },
+            {
+              "discriminant": 1,
+              "name": "WrongStatus"
+            },
+            {
+              "discriminant": 2,
+              "name": "WrongOperator"
+            },
+            {
+              "discriminant": 3,
+              "name": "InsufficientFee"
+            }
+          ]
+        }
+      },
+      "path": [
+        "personal_shipment_transaction",
+        "personal_shipment_transaction",
+        "Error"
+      ]
+    },
+    {
+      "def": {
+        "primitive": "u64"
+      }
+    },
+    {
+      "def": {
+        "primitive": "u32"
+      }
+    }
+  ]
+}
