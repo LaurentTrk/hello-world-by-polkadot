@@ -1,7 +1,7 @@
 import metadata from './PersonalShipmentTransactionMetadata.json';
 import {Abi, ContractPromise, BlueprintPromise} from '@polkadot/api-contract';
 
-export const defaultGasLimit = 1000000000000000;
+export const defaultGasLimit = 300000n * 1000000n;
 export const defaultEndowment = 1000000000000000;
 export const PersonalShipmentTransactionContractCodeHash = '0x397e22075073cb538c503fb1297cffc230e8132b5d3af98b55ebccfd2b773238';
 
