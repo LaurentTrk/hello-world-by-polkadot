@@ -25,7 +25,9 @@ mod personal_shipment_transaction {
                                         0x6d,0xef,0xc2,0xaa,0x37,0xba,0x41,0xb6,
                                         0x2a,0x5c,0xdf,0x60,0x45,0x07,0x63,0x3e];
     /// Oracle Job ID
-    const ORACLE_JOB_ID: &str = "03db560d6e064ac8adc492a82bdd484c";
+    const ORACLE_JOB_ID: &str = "d89b3df2c0e34aa6ac7c93206b63a33b";
+    /// Endowment per stakeholder
+    const ENDOWMENT_PER_STAKEHOLDER: Balance = 1000000000000000;
 
     #[derive(Debug, Copy, Clone, PartialEq, Eq, scale::Encode, scale::Decode, SpreadLayout, PackedLayout)]
     #[cfg_attr(feature = "std", derive(::scale_info::TypeInfo, ::ink_storage::traits::StorageLayout))]
@@ -46,7 +48,6 @@ mod personal_shipment_transaction {
         goods_price: Balance,
         status: TransactionStatus,
         status_refreshing: bool,
-
         receiver_payment: Balance,
         tracking_number: Option<Vec<u8>>,
     }
@@ -58,7 +59,6 @@ mod personal_shipment_transaction {
         WrongCaller,
         WrongStatus,
         WrongOperator,
-        /// Fee provided does not match minimum required fee
         InsufficientFee,
     }
 
@@ -82,6 +82,7 @@ mod personal_shipment_transaction {
     impl PersonalShipmentTransaction {
         #[ink(constructor)]
         pub fn new(sender: AccountId, receiver: AccountId, goods_description: Vec<u8>, goods_price: Balance) -> Self {
+            // TODO : we should check that endowment is at least 2 x ENDOWMENT_PER_STAKEHOLDER
             if !Self::is_called_by_the_stakeholders(sender, receiver){
                 ink_env::debug_println("Only both sender and receiver could create contract.");
                 panic!("Only both sender and receiver could create contract.")
@@ -213,23 +214,21 @@ mod personal_shipment_transaction {
                 return Err(Error::WrongOperator);
             }
             if self.receiver_payment > 0 {
-                let transfer_result = self.env().transfer(self.receiver, self.receiver_payment);
+                let transfer_result = self.env().transfer(self.receiver, self.receiver_payment + ENDOWMENT_PER_STAKEHOLDER);
                 if transfer_result.is_err() {
                     ink_env::debug_println("Transfer failed.");
                     return Err(Error::WrongOperator)
                 }
+                self.receiver_payment = 0;
             }
-            // TODO : transfer the half of the balance to the receiver
             self.env().terminate_contract(self.sender);
         }
 
         fn shipment_achieved(&mut self) -> Result<()> {
-            let transfer_result = self.env().transfer(self.sender, self.goods_price);
+            let transfer_result = self.env().transfer(self.receiver, ENDOWMENT_PER_STAKEHOLDER);
             if transfer_result.is_err() {
                 ink_env::debug_println("Transfer failed.");
-                return Err(Error::WrongOperator)
             }
-            // TODO : transfer the half of the balance to the receiver
             self.env().terminate_contract(self.sender);
         }
 
